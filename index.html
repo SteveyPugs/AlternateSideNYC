@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Alternate Side NYC</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <link rel="apple-touch-icon" href="img/AltSideNYC_57x57.png" />
+		<!-- <link rel="apple-touch-icon" sizes="72x72" href="touch-icon-ipad.png" /> -->
+		<link rel="apple-touch-icon" sizes="114x114" href="img/AltSideNYC_114x114.png" />
+		<!-- <link rel="apple-touch-icon" sizes="144x144" href="touch-icon-ipad-retina.png" /> -->
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<link rel="stylesheet" href="css/mobile.css" type="text/css"/>
+		<script type="text/javascript" src="js/redirect.js"></script>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-42340322-1', 'alternatesidenyc.com');
+		  ga('send', 'pageview');
+
+		</script>
+	</head>
+	<body>
+		<div id="top" style="display:none;"></div>
+		<div class="refreshButton" onClick="window.location.reload()">&#8635;</div>
+		<div class="smsButton" id="OpenWindow">SMS</div>
+		<div class="smsBox" id="SMS"><b>Send a Alternate Side NYC<br>Status Message To A Friend</b><br><br>Telephone Number<br><input type="tel" class="telNum" id="TelNumber" />
+			<div id="error" class="error">You must enter a number</div>
+			<br><br>
+			<a href="#" class="SMSButtons" id="SendSMS">Send SMS</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="CloseWindow" class="SMSButtons">Cancel</a>
+			<br><br>
+		</div>
+		<div class="locationButton" id="locateme">Map</div>
+		<div id="FirstLevel">
+			<div class="date" id="mth"></div>
+			<div class="date" id="day"></div>
+			<div id="ASPStatus"></div>
+		</div>
+		<div id="SecondLevel">
+			<div class="desc">&uarr; 10 Day Forecast &darr;</div>
+			<div id="Cal" class="Calendar"></div>
+		</div>
+		<div id="ThirdLevel">
+		<div class="desc">&larr; Future Cancellation Dates &rarr;</div>
+			<div id="FutureDays" class="Future"></div>
+		</div>
+		<div id="map-canvas"></div>
+		<div id="FourthLevel">
+			<div class="AlternateSideList" id="Alt1"></div>
+			<div class="AlternateSideList" id="Alt2"></div>
+		</div>
+		<div class="bottomLink" id="GoToTop">
+		Back to Top
+		</div>
+	</body>  
+</html>
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDg3Mh1w2NStJzQZ__38HL1P7uM8jPhCmo&sensor=true"></script>
+<script type="text/javascript" src="js/mobile.js"></script>
