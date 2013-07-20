@@ -1,3 +1,11 @@
+var page = window.location.href;
+var data;
+if (page.indexOf("localhost") == -1)
+{dataLink = "api";}
+else
+{dataLink = "beta";}
+
+
 //Javascript Code
 
 var days = ['Sun','Mon','Tue','Wed','Thur','Fri','Sat'];
@@ -19,7 +27,7 @@ var map;
 //Gets Weather
 $.ajax({
 	 type: "GET",
-	 url: "http://api.alternatesidenyc.com/GetWeather",
+	 url: "http://" + dataLink + ".alternatesidenyc.com/GetWeather",
 	 dataType: "text",
 	 async:false,
 	 }).done(function(data) { 
@@ -38,7 +46,7 @@ $.ajax({
 //Gets Full Forecast
 $.ajax({
 	type: "GET",
-	url: "http://api.alternatesidenyc.com/GetForecast",
+	url: "http://" + dataLink + ".alternatesidenyc.com/GetForecast",
 	dataType: "json"
 	}).done(function(data) {
 		var json = data;
@@ -100,7 +108,7 @@ $.ajax({
 //Gets Cancel Dates
 $.ajax({
 	 type: "GET",
-	 url: "http://api.alternatesidenyc.com/GetCancelDates",
+	 url: "http://" + dataLink + ".alternatesidenyc.com/GetCancelDates",
 	 dataType: "json"
 	 }).done(function(data) {
 	 var json = data;
@@ -146,7 +154,7 @@ $('#SendSMS').click(function(){
 	else
 	{
 		$('#error').hide();
-		$.get('http://api.alternatesidenyc.com/SendSMS/' + telNumber + '/' + todaysStatus, function(data) {
+		$.get('http://' + dataLink + '.alternatesidenyc.com/SendSMS/' + telNumber + '/' + todaysStatus, function(data) {
 		  if (data.indexOf("SMS Sent") != -1)
 		  {
 			$("#SMS").fadeOut("fast");
@@ -205,7 +213,13 @@ $.ajax({
 					if (data.results[x].address_components[z].types[0] == 'route')
 					{
 						road = data.results[x].address_components[z].long_name;
-						road = road.replace("th","");
+						
+						if (road.indexOf("maspeth") == -1)
+						{
+							road = road.replace("th","");
+						}
+						
+						
 					}
 					
 					if (data.results[x].address_components[z].types[0] == 'sublocality')
@@ -220,40 +234,32 @@ $.ajax({
 			}
 		 }
 	 } 	 
-	 $.ajax({
-	 type: "GET",
-	 url: "http://api.alternatesidenyc.com/GetCrossStreet/" + town + "/" + road + "/" + streetNumber,
-	 dataType: "json"
-	 }).done(function(crossStreetData){
-		 var crossStreets = crossStreetData.split(",")
- 		//do page changes here
-		
-		$.ajax({
-			 type: "GET",
-			 url:  "http://api.alternatesidenyc.com/GetAlternateSideSigns/" + town + "/" + road + "/" + $.trim(crossStreets[0]) + "/" + $.trim(crossStreets[1]),
-			 dataType: "json"
-			 }).done(function(signsData){
-			 if (signsData.length != 0)
-			 {
-				 
-				 if (!signsData[0].SignDetails)
-				 {$('#Alt1').html("No Sign Data Available");}
-				 else
-				 {$('#Alt1').html(signsData[0].SignDetails + " - SIDE: " + signsData[0].SideOfBlock);}
-				 
-				 if (!signsData[1].SignDetails)
-				 {$('#Alt2').html("No Sign Data Available");}
-				 else
-				 {$('#Alt2').html(signsData[1].SignDetails + " - SIDE: " + signsData[1].SideOfBlock);}
-			 }
+	$.ajax({
+		 type: "GET",
+		 path: '/GetAlternateSideSigns/{bor}/{street}/{num}',
+		 url:  "http://" + dataLink + ".alternatesidenyc.com/GetAlternateSideSigns/" + town + "/" + road + "/"  + streetNumber,
+		 dataType: "json"
+		 }).done(function(signsData){
+		 if (signsData.length != 0)
+		 {
+			 
+			 if (!signsData[0].SignDetails)
+			 {$('#Alt1').html("No Sign Data Available");}
 			 else
-			 {
-				$('#Alt1').html("No Sign Data Available");
-				$('#Alt2').html("No Sign Data Available");
-			 }
-		});
-	 });
- });
+			 {$('#Alt1').html(signsData[0].SignDetails + " - SIDE: " + signsData[0].SideOfBlock);}
+			 
+			 if (!signsData[1].SignDetails)
+			 {$('#Alt2').html("No Sign Data Available");}
+			 else
+			 {$('#Alt2').html(signsData[1].SignDetails + " - SIDE: " + signsData[1].SideOfBlock);}
+		 }
+		 else
+		 {
+			$('#Alt1').html("No Sign Data Available");
+			$('#Alt2').html("No Sign Data Available");
+		 }
+	});
+	});
    
 	  var marker = new google.maps.Marker({
       position: pos,
