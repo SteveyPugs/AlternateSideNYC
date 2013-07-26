@@ -1,9 +1,9 @@
 var page = window.location.href;
 var data;
 if (page.indexOf("localhost") == -1)
-{dataLink = "api";}
+{dataLink = "http://api.alternatesidenyc.com";}
 else
-{dataLink = "beta";}
+{dataLink = "http://localhost:8080";}
 
 
 //Javascript Code
@@ -27,7 +27,7 @@ var map;
 //Gets Weather
 $.ajax({
 	 type: "GET",
-	 url: "http://" + dataLink + ".alternatesidenyc.com/GetWeather",
+	 url: dataLink + "/GetWeather",
 	 dataType: "text",
 	 async:false,
 	 }).done(function(data) { 
@@ -46,7 +46,7 @@ $.ajax({
 //Gets Full Forecast
 $.ajax({
 	type: "GET",
-	url: "http://" + dataLink + ".alternatesidenyc.com/GetForecast",
+	url: dataLink + "/GetForecast",
 	dataType: "json"
 	}).done(function(data) {
 		var json = data;
@@ -108,7 +108,7 @@ $.ajax({
 //Gets Cancel Dates
 $.ajax({
 	 type: "GET",
-	 url: "http://" + dataLink + ".alternatesidenyc.com/GetCancelDates",
+	 url: dataLink + "/GetCancelDates",
 	 dataType: "json"
 	 }).done(function(data) {
 	 var json = data;
@@ -154,7 +154,7 @@ $('#SendSMS').click(function(){
 	else
 	{
 		$('#error').hide();
-		$.get('http://' + dataLink + '.alternatesidenyc.com/SendSMS/' + telNumber + '/' + todaysStatus, function(data) {
+		$.get(dataLink +  '/SendSMS/' + telNumber + '/' + todaysStatus, function(data) {
 		  if (data.indexOf("SMS Sent") != -1)
 		  {
 			$("#SMS").fadeOut("fast");
@@ -236,8 +236,7 @@ $.ajax({
 	 } 	 
 	$.ajax({
 		 type: "GET",
-		 path: '/GetAlternateSideSigns/{bor}/{street}/{num}',
-		 url:  "http://" + dataLink + ".alternatesidenyc.com/GetAlternateSideSigns/" + town + "/" + road + "/"  + streetNumber,
+		 url:  dataLink + "/GetAlternateSideSigns/" + town + "/" + road + "/"  + streetNumber,
 		 dataType: "json"
 		 }).done(function(signsData){
 		 if (signsData.length != 0)
