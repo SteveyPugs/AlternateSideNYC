@@ -213,13 +213,10 @@ $.ajax({
 					if (data.results[x].address_components[z].types[0] == 'route')
 					{
 						road = data.results[x].address_components[z].long_name;
-						
-						if (road.indexOf("maspeth") == -1)
+						if ((road.indexOf("maspeth") == -1) || (road.indexOf("north") == -1) || (road.indexOf("south") == -1))
 						{
 							road = road.replace("th","");
 						}
-						
-						
 					}
 					
 					if (data.results[x].address_components[z].types[0] == 'sublocality')
