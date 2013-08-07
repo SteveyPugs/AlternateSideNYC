@@ -106,41 +106,48 @@ font-weight:200;
 .refreshButton
 {
 position:absolute;
-background-color:#093;
+background-color:#2ecc71;
 top:5px;
 right:5px;
-font-size:27px;
-color:#FFF;
-font-weight:100;
-width:32px;
-height:32px;
-text-align:center;
-vertical-align:top;
+width:30px;
+height:30px;
+padding:3px;
 }
 
 
 .locationButton
 {
 position:absolute;
-background-color:#09F;
+background-color:#3498db;
 top:5px;
 left:5px;
-color:#FFF;
-padding:5px;
-text-align:center;
-height:22px;
+width:30px;
+height:30px;
+padding:3px;
 }
+
+.donate
+{
+position:absolute;
+background-color:#3498db;
+top:5px;
+left:45px;
+width:30px;
+height:30px;
+padding:3px;
+}
+
+
 
 .smsButton
 {
 position:absolute;
-background-color:#093;
+background-color:#2ecc71;
 top:5px;
-right:42px;
-color:#FFF;
-padding:5px;
-text-align:center;
-height:22px;
+right:45px;
+width:30px;
+height:30px;
+padding:3px;
 }
 
 
@@ -149,7 +156,7 @@ height:22px;
 top:51px;
 position:absolute;
 text-align:center;
-background-color:#00AF33;
+background-color:#2ecc71;
 width:200px;
 margin-left:-110px;
 left:50%;
@@ -173,15 +180,10 @@ padding:7px;
 border:2px solid #FFEEEE;
 }
 
-.telNum
-{
-border:2px solid #000000;
-border-radius:0px;
-}
 
 .error
 {
-color:yellow;
+color:#ecf0f1;
 font-weight:bold;
 display:none;
 }

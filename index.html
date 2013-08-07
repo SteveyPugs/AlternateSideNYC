@@ -22,16 +22,18 @@
 		</script>
 	</head>
 	<body>
-		<div id="top" style="display:none;"></div>
-		<div class="refreshButton" onClick="window.location.reload()">&#8635;</div>
-		<div class="smsButton" id="OpenWindow">SMS</div>
+		<div id="top" style="display:none;"></div>		
+		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SUDM9L6GSDFSC" target="_blank"><img src="img/donate.png" class="donate"></a>
+		<img src="img/location.png" class="locationButton" id="locateme">
+		<img src="img/refresh.png" class="refreshButton" onClick="window.location.reload()">
+		<img src="img/text.png" class="smsButton" id="OpenWindow">
 		<div class="smsBox" id="SMS"><b>Send a Alternate Side NYC<br>Status Message To A Friend</b><br><br>Telephone Number<br><input type="tel" class="telNum" id="TelNumber" />
 			<div id="error" class="error">You must enter a number</div>
 			<br><br>
 			<a href="#" class="SMSButtons" id="SendSMS">Send SMS</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" id="CloseWindow" class="SMSButtons">Cancel</a>
 			<br><br>
 		</div>
-		<div class="locationButton" id="locateme">Map</div>
+		
 		<div id="FirstLevel">
 			<div class="date" id="mth"></div>
 			<div class="date" id="day"></div>
