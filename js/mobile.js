@@ -191,6 +191,7 @@ $.ajax({
 	 url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.coords.latitude + "," + position.coords.longitude + "&sensor=true",
 	 dataType: "json"
 	 }).done(function(data) {
+	 
 	 for(var x = 0; x <= data.results.length - 1; x++)
 	 {
 		 for(var y = 0; y <= data.results[x].types.length - 1; y++)
@@ -202,12 +203,14 @@ $.ajax({
 					if (data.results[x].address_components[z].types[0] == 'street_number')
 					{
 						streetNumber = data.results[x].address_components[z].long_name;
-						var count = streetNumber.match(/-/g);  
-						if (count.length > 1)
+						var count = streetNumber.match(/-/g); 
+						if (count != null)
 						{
-							streetNumber = streetNumber.substring(0, streetNumber.indexOf("-",0)) + "-0"
+							if (count.length > 1)
+							{
+								streetNumber = streetNumber.substring(0, streetNumber.indexOf("-",0)) + "-0"
+							}
 						}
-						//console.log(streetNumber);
 					}
 					
 					if (data.results[x].address_components[z].types[0] == 'route')
