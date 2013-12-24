@@ -117,6 +117,8 @@ $.ajax({
 	 for(var x = 1; x <= json.length-1; x++)
 	 {	
 		checkDate = new Date(json[x].AlternateSideNYCCancelDate);
+		//adjusts the date to fix it
+		checkDate = new Date(checkDate.setDate(checkDate.getDate()+1));
 						
 		if (checkDate >= todaysDate)
 		{
