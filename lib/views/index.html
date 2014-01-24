@@ -1,0 +1,316 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alternate Side NYC</title>
+    <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="apple-touch-icon" sizes="114x114" href="img/ASNYCIconiPhoneRetina.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="img/ASNYCIconiPadRetina.png" />
+    <link rel="apple-touch-icon" href="img/ASNYCIconiPhoneNonRetina.png" />
+    <script src="js/vendor/modernizr.js"></script>
+  </head>
+<body>
+  <nav class="top-bar" data-topbar>
+    <ul class="title-area">
+      <li class="name"><h1><a href="#"><b>Alternate Side NYC</b></a></h1></li>
+    </ul>
+    <section class="top-bar-section">
+      <!-- Left Nav Section -->
+      <ul class="left">
+        <li><a href="#">v2.0.0</a></li>
+      </ul>
+      <!-- Right Nav Section -->
+      <ul class="right">
+        <li><a href="#" data-reveal-id="about">About Alternate Side NYC</a></li>
+      </ul>
+    </section>
+  </nav>
+  <div class="row" style="background:#ecf0f1">
+    <div class="large-3 columns text-center">
+      <h5><b><u>Today & 9 Day Forecast</u></b></h5>
+    </div>
+    <div class="large-2 columns text-center">
+      <h5><b><u>Future Cancellations</u></b></h5>
+    </div>
+    <div class="large-7 columns text-center">
+      <h5><b><u>Current Location Street Signs</u></b></h5>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="large-3 columns" style="max-height:900px; overflow-x:auto">
+      <div class="row">
+        <div class="large-12 columns text-center">
+          <h1 id="month"></h1>
+          <h1 id="day"></h1>
+          <h1 id="year"></h1>
+          <h5 id="status"></h5>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="large-12 columns text-center">
+          <table width="100%" align="center" id="schedule"></table>
+        </div>
+      </div>
+    </div>
+    <div class="large-2 columns" style="max-height:900px; overflow-x:auto">
+      <div class="row">
+        <div class="large-12 columns text-center">
+          <table width="100%" align="center" id="list"></table>
+        </div>
+      </div>
+    </div>
+    <div class="large-7 columns">
+      <div id="map-canvas"></div>
+      <div class="row">
+        <div class="large-6 columns text-center" id="Sign1"></div>
+        <div class="large-6 columns text-center" id="Sign2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Section -->
+  <div id="about" class="reveal-modal" data-reveal>
+    <!-- Add Screen shot here!-->
+
+    <h4><b>What is Alternate Side NYC?</b></h4>
+    <p>Alternate Side NYC is a website that provides an up-to-date status on New York City Alternate Side Parking</p>
+    <p>Features provided by Alternate Side NYC:
+      <ul>
+        <li>Todays Date w/ NYC Alternate Side Parking Status</li>
+        <li>9 Day Outlook Status w/ Weather (High/Low Temp & Conditions</li>
+        <li>Future NYC ASP Cancelattion Dates</li>
+        <li>NYC Alternate Side Parking Signs for your location (AVAILABLE IN NYC ONLY)</li>
+      </ul>
+    </p>
+    <h4><b>Why design it?</b></h4>
+    <p>So 2+ years ago I moved to Queens. There is one negative to NYC though, Alternate Side Parking! Moving your car at least once a week becomes dificult. If you don't obey the rules, forfeit $45 to NYC. One thing the internet doesn't have a decent version of is an website/app that actually helps you figure out different things related to NYC ASP. Then I decided, screw it I am making one!</p>
+    <h4><b>Can I donate?</b></h4>
+    <p>The servers and everything else I use to power this do cost money. I don't normally take donations but if you insist you can leave it <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SUDM9L6GSDFSC" target="_blank">here</a> and I won't look ;)</p>
+    <h4><b><a href="mailto:stephen@alternatesidenyc.com">Stephen Pugliese</a></b></h4>
+    
+    <p>A seasoned web developer who is aspiring to do much greater work. Loves to work with HTML, CSS, js, Node, SQL.
+      <br><br>
+      <a href="https://github.com/SteveyPugs">GitHub Profile</a><br>
+      <a href="http://www.endoflne.com/">Blog</a><br>
+      <a href="http://stephenpugliese.com/">Personal Website</a>
+    </p>
+    <a href="https://www.facebook.com/AlternateSideNYC"><h4><b>Find us on Facebook!</b></h4></a>
+
+    <a class="close-reveal-modal">&#215;</a>
+  </div>
+
+
+  <script src="js/moment-with-langs.js"></script>
+  <script src="js/vendor/jquery.js"></script>
+  <script src="js/foundation.min.js"></script>
+  <script>
+  $(document).foundation()
+  </script>
+  <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga')
+    ga('create', 'UA-42340322-1', 'alternatesidenyc.com')
+    ga('send', 'pageview')
+  </script>
+  <script>
+    var weatherArray = new Array()
+    $.ajax({
+      url: "http://localhost:8080/WeatherForecast",
+      async:false,
+      success: function(reply){
+        var length = reply.forecast.simpleforecast.forecastday.length
+        for(var x = 1; x <= length-1; x++){
+          weatherArray[x-1] = new Array(3)
+          weatherArray[x-1][0] = reply.forecast.simpleforecast.forecastday[x].high.fahrenheit
+          weatherArray[x-1][1] = reply.forecast.simpleforecast.forecastday[x].low.fahrenheit
+          weatherArray[x-1][2] = reply.forecast.simpleforecast.forecastday[x].icon_url
+        }
+      }
+    })
+
+
+    $('#month').text(moment().format("MMMM"))
+    $('#day').text(moment().format("Do"))
+    $('#year').text(moment().format("YYYY"))
+
+    var todaysStatusLink = "http://localhost:8080/Dates/"+moment().format("YYYY")+"/"+moment().format("MM")+"/"+moment().format("DD")+""
+    $.get(todaysStatusLink, function(reply) {
+      if (typeof reply == "object" && jQuery.isEmptyObject(reply) == true) {
+        $('#status').text("Alternate Side Parking is in Effect Today")
+        $('#status').css("color","green")
+      }
+      else{
+        $('#status').text("Alternate Side Parking is not in Effect Today")
+        $('#status').css("color","red")
+      }        
+    })
+
+    
+
+    var strSchedule = ""
+    for (var i = 1; i < 10; i++) {
+      strSchedule = strSchedule + "<tr>"
+      strSchedule = strSchedule + "<td>"
+      strSchedule = strSchedule + "<div class='row'>"
+      strSchedule = strSchedule + "<div class='large-4 columns text-left'><h6>"+moment().add('days', i).format("MMM")+" "+moment().add('days', i).format("DD")+"</h6></div>"
+      strSchedule = strSchedule + "<div class='large-4 columns text-center'><h6>"+weatherArray[i-1][0]+"/"+weatherArray[i-1][1]+"&nbsp;&nbsp;&nbsp;<img align=top width=24 height=24 src=" + weatherArray[i-1][2] + " /></h6></div>"
+
+      $.ajax({
+        url: "http://localhost:8080/Dates/"+moment().add('days', i).format("YYYY")+"/"+moment().add('days', i).format("MM")+"/"+moment().add('days', i).format("DD")+"",
+        async:false,
+        success: function(reply) {
+          if (typeof reply == "object" && jQuery.isEmptyObject(reply) == true) {
+            strSchedule = strSchedule + "<div class='large-4 columns text-right' style='color:green'><h6>YES</h6></div>"
+          }
+          else{
+            strSchedule = strSchedule + "<div class='large-4 columns text-right' style='color:red'><h6>NO</h6></div>"
+          }
+        }      
+      })
+
+      strSchedule = strSchedule + "</div>"
+      strSchedule = strSchedule + "</td>"
+      strSchedule = strSchedule + "</tr>"
+    }
+    $('#schedule').html(strSchedule)
+
+    var list = ""
+    $.ajax({
+        url: "http://localhost:8080/Dates",
+        async:true,
+        success: function(reply) {          
+          for (var i = 1; i < reply.length; i++){
+            var isBefore = moment(moment(reply[i].CancelDate).add('days', 1).format('MM/DD/YYYY')).isBefore(moment().format('YYYY-MM-DD'))
+            if (!isBefore){
+              list = list + "<tr>"
+              list = list + "<td class='text-center' style='font-size:11px;'><b>"+moment(reply[i].CancelDate).add('days', 1).format('dddd MMMM Do, YYYY')+"</b><br>"+reply[i].CancelName+"</td>"
+              list = list + "</tr>"
+            }
+          }
+          $('#list').html(list)  
+        }
+      })
+    
+          
+  </script>
+  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKaEzcmlfiNJz__ph3eJKTPbt35vR9ugw&sensor=true"></script>
+  <script>
+  //seperate section for the maps
+  function initialize() {
+    var mapOptions = {
+      zoom: 17,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      mapTypeControl: false,
+      draggable: false,
+      scaleControl: false,
+      scrollwheel: false,
+      navigationControl: false,
+      streetViewControl: false,
+      panControl: false,
+      zoomControl: false,
+    }
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+
+    if(navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+        var pos = new google.maps.LatLng(position.coords.latitude,position.coords.longitude)
+
+        $.ajax({
+          url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.coords.latitude + "," + position.coords.longitude + "&sensor=true",
+          async:false,
+          success: function(reply){
+            for(var x = 0; x <= reply.results.length - 1; x++){
+              for(var y = 0; y <= reply.results[x].types.length - 1; y++){
+                if (reply.results[x].types[y] == 'street_address'){
+                  for(var z = 0; z <= reply.results[x].address_components.length - 1; z++){
+                    if (reply.results[x].address_components[z].types[0] == 'street_number'){
+                      streetNumber = reply.results[x].address_components[z].long_name
+                      var count = streetNumber.match(/-/g)
+                      if (count != null && count.length > 1){
+                        streetNumber = streetNumber.substring(0, streetNumber.indexOf("-",0)) + "-0"
+                      }
+                    }
+
+                    if (reply.results[x].address_components[z].types[0] == 'route'){
+                      road = reply.results[x].address_components[z].long_name
+                      if ((road.indexOf("maspeth") == -1) || (road.indexOf("north") == -1) || (road.indexOf("south") == -1)){
+                        road = road.replace("th","")
+                      }
+                    }
+
+                    if (reply.results[x].address_components[z].types[0] == 'sublocality'){
+                      town = reply.results[x].address_components[z].long_name
+                    }
+
+                    if (reply.results[x].address_components[z].types[0] == 'locality'){
+                      state = reply.results[x].address_components[z].long_name
+                    }
+
+                    if (reply.results[x].address_components[z].types[0] == 'postal_code'){
+                      zipcode = reply.results[x].address_components[z].long_name
+                    }
+                  }
+                }
+              }
+            }
+
+            $.ajax({
+              url: "http://localhost:8080/Signs/" + town + "/" + road + "/"  + streetNumber,
+              async:false,
+              success: function(reply){
+                if (reply.length != 0){
+                  if (!reply[0].SignDetails){
+                    $('#Sign1').html("No Sign Data Available")
+                  }
+                  else{
+                    $('#Sign1').html(reply[0].SignDetails + " - SIDE: " + reply[0].SideOfBlock)
+                  }
+
+                  if (!reply[1].SignDetails){
+                    $('#Sign2').html("No Sign Data Available")
+                  }
+                  else{
+                    $('#Sign2').html(reply[1].SignDetails + " - SIDE: " + reply[1].SideOfBlock)
+                  }
+                }
+                else{
+                $('#Sign1').html("No Sign Data Available")
+                $('#Sign2').html("No Sign Data Available")
+                }
+              }
+            })
+          }
+        })
+
+        var marker = new google.maps.Marker({position: pos,map: map})
+        map.setCenter(pos)
+      }, function() {
+        handleNoGeolocation(true)
+      })
+    }
+    else{
+      handleNoGeolocation(false)
+    }
+  }
+  
+  function handleNoGeolocation(errorFlag) {
+    if (errorFlag) {
+      var content = 'Error: The Geolocation service failed.'
+    }
+    else {
+      var content = 'Error: Your browser doesn\'t support geolocation.'
+    }
+    var options = {map: map, position: new google.maps.LatLng(60, 105), content: content}
+    var infowindow = new google.maps.InfoWindow(options)
+    map.setCenter(options.position)
+  }
+  
+  google.maps.event.addDomListener(window, 'load', initialize)
+  </script>
+</body>
+</html>
