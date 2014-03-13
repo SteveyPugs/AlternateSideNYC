@@ -12,18 +12,28 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
   </head>
 <body ng-app="AlternateSideNYC">
-  <div data-magellan-expedition="fixed">
-    <dl class="sub-nav">
-      <dd><b>Alternate Side NYC - v2.0.0</b></dd>
-      <dd><a href="#" data-reveal-id="about"></a></dd>
-      <dd data-magellan-arrival="#Today"><a href="#Today">Today</a></dd>
-      <dd data-magellan-arrival="#9Day"><a href="#9Day">9-Day</a></dd>
-      <dd data-magellan-arrival="#Future"><a href="#Future">Future Cancellations</a></dd>
-      <dd data-magellan-arrival="#Location"><a href="#Location">Find Your Sign</a></dd>
-      <dd data-magellan-arrival="#About"><a href="#About">About Alternate Side NYC</a></dd>
-    </dl>
+  <div class="sticky" data-options="sticky_on: large">
+    <nav class="top-bar" data-topbar>
+      <ul class="title-area">
+        <li class="name">
+          <h1><a href="/">Alternate Side NYC</a></h1>
+        </li>
+        <li class="toggle-topbar menu-icon"><a href="#">Menu</a></li>
+      </ul>
+      <section class="top-bar-section">
+        <ul class="right">
+          <li><a href="#">v2.0.0</a></li>
+        </ul>
+        <ul class="left">
+          <li><a href="#Today">Today</a></li>
+          <li><a href="#9Day">9-Day</a></li>
+          <li><a href="#Future">Future Cancellations</a></li>
+          <li><a href="#Location">Find Your Sign</a></li>
+          <li><a href="#About">About Alternate Side NYC</a></li>
+        </ul>
+      </section>
+    </nav>
   </div>
-
   <a name="Today"></a>
   <div class="row">
     <div class="large-12 columns text-center" ng-controller="todayController">
@@ -83,6 +93,7 @@
   <div class="row"></div>
   <a name="Location"></a>
   <div id="map-canvas"></div>
+  
   <div class="row nopadding" style="background:#2c3e50;" ng-controller="mapController">
         <div class="large-6 columns text-center" style="padding:10px; color: white;">{{Sign1}} - SIDE: {{Side1}}</div>
         <div class="large-6 columns text-center" style="padding:10px; color: white;">{{Sign2}} - SIDE: {{Side2}}</div>
@@ -125,6 +136,7 @@
   <script src="js/moment-with-langs.js"></script>
   <script src="js/vendor/jquery.js"></script>
   <script src="js/foundation.min.js"></script>
+  <script src="js/foundation/foundation.magellan.js"></script>
   <script>
   $(document).foundation()
   </script>
