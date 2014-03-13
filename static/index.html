@@ -51,7 +51,7 @@
         <tbody ng-controller="scheduleController">
           <tr ng-repeat="item in data">
             <td><h6 class="text-center">{{item.date}}</h6></td>
-            <td><h6 class="text-center">{{item.weatherText}}</h6><!--<img src="{{item.weatherPicture}}" width="25" class="text-center" />--></td>
+            <td><h6 class="text-center">{{item.weatherText}}</h6><img ng-src="{{item.weatherPicture}}" width="25" class="text-center" /></td>
             <td><h6 class="text-center">{{item.dateStatus}}</h6></td>
           </tr>
         </tbody>

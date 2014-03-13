@@ -1,20 +1,4 @@
 var app = angular.module('AlternateSideNYC',[])
-
-var weatherArray = new Array()
-$.ajax({
-  url: "http://api.alternatesidenyc.com/WeatherForecast",
-  async:false,
-  success: function(reply){
-    var length = reply.forecast.simpleforecast.forecastday.length
-    for(var x = 1; x <= length-1; x++){
-      weatherArray[x-1] = new Array(3)
-      weatherArray[x-1][0] = reply.forecast.simpleforecast.forecastday[x].high.fahrenheit
-      weatherArray[x-1][1] = reply.forecast.simpleforecast.forecastday[x].low.fahrenheit
-      weatherArray[x-1][2] = reply.forecast.simpleforecast.forecastday[x].icon_url
-    }
-  }
-})
-
 app.controller("todayController",function($scope,$http){
   $scope.month = moment().format("MMMM")
   $scope.day = moment().format("Do")
@@ -38,25 +22,40 @@ app.controller("todayController",function($scope,$http){
 
 app.controller("scheduleController",function($scope,$http){
   $scope.data = []
-  for (var i = 0; i < 9; i++){
-    row = {}
-    row.date = moment().add('days', i+1).format("MMM") + " " + moment().add('days', i+1).format("DD")
-    row.weatherText = weatherArray[i][0] + "/" + weatherArray[i][1]
-    row.weatherPicture = weatherArray[i][2] 
-    $.ajax({
-      url: "http://api.alternatesidenyc.com/Dates/" + moment().add('days', i).format("YYYY") + "/" + moment().add('days', i).format("MM") + "/" + moment().add('days', i+1).format("DD"),
-      async: false,
-      success: function(reply){
-        if (jQuery.isEmptyObject(reply) == true){
-          row.dateStatus = "YES"
-        }
-        else{
-          row.dateStatus = "NO"
-        }
-      }
-    })
-    $scope.data.push(row)
+  $scope.weather = []
+  var httpMethods = {
+    method: "GET",
+    url: "http://api.alternatesidenyc.com/WeatherForecast"
   }
+  $http(httpMethods).success(function(data, status, headers, config) {
+    var len = data.forecast.simpleforecast.forecastday.length
+    for(var x = 1; x <= len-1; x++){
+      var weatherInner = []
+      weatherInner[0] = data.forecast.simpleforecast.forecastday[x].high.fahrenheit
+      weatherInner[1] = data.forecast.simpleforecast.forecastday[x].low.fahrenheit
+      weatherInner[2] = data.forecast.simpleforecast.forecastday[x].icon_url
+      $scope.weather.push(weatherInner)
+    }
+    for (var i = 0; i < 9; i++){
+      row = {}
+      row.date = moment().add('days', i+1).format("MMM") + " " + moment().add('days', i+1).format("DD")
+      row.weatherText = $scope.weather[i][0] + "/" + $scope.weather[i][1]
+      row.weatherPicture = $scope.weather[i][2]
+      $.ajax({
+        url: "http://api.alternatesidenyc.com/Dates/" + moment().add('days', i).format("YYYY") + "/" + moment().add('days', i).format("MM") + "/" + moment().add('days', i+1).format("DD"),
+        async: false,
+        success: function(reply){
+          if (jQuery.isEmptyObject(reply) == true){
+            row.dateStatus = "YES"
+          }
+          else{
+            row.dateStatus = "NO"
+          }
+        }
+      })
+      $scope.data.push(row)
+    }
+  })
 })
 
 app.controller("daysOffController",function($scope,$http){
