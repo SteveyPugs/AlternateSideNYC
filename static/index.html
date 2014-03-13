@@ -9,8 +9,9 @@
     <link rel="apple-touch-icon" sizes="144x144" href="img/ASNYCIconiPadRetina.png" />
     <link rel="apple-touch-icon" href="img/ASNYCIconiPhoneNonRetina.png" />
     <script src="js/vendor/modernizr.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
   </head>
-<body>
+<body ng-app="AlternateSideNYC">
   <div data-magellan-expedition="fixed">
     <dl class="sub-nav">
       <dd><b>Alternate Side NYC - v2.0.0</b></dd>
@@ -25,11 +26,11 @@
 
   <a name="Today"></a>
   <div class="row">
-    <div class="large-12 columns text-center">
-      <h1 id="month"></h1>
-      <h1 id="day"></h1>
-      <h1 id="year"></h1>
-      <h1 id="status"></h1>
+    <div class="large-12 columns text-center" ng-controller="todayController">
+      <h1 class="text-center" ng-bind="month"></h1>
+      <h1 class="text-center" ng-bind="day"></h1>
+      <h1 class="text-center" ng-bind="year"></h1>
+      <h1 class="text-center" id="status" ng-bind="status"></h1>
     </div>
   </div>
   <div class="row"></div>
@@ -37,22 +38,54 @@
   <a name="9Day"></a>
   <div class="row">
     <div class="large-1 columns text-center">&nbsp;</div>
-    <div class="large-10 columns text-center" id="schedule"></div>
+    <div class="large-10 columns text-center">
+      <table width="100%">
+        <thead>
+          <tr>
+            <th class="text-center" style="width:33%"><h5><b>Date</b></h5></th>
+            <th class="text-center" style="width:33%"><h5><b>Weather</b></h5></th>
+            <th class="text-center" style="width:33%"><h5><b>Status</b></h5></th>
+          </tr>
+        </thead>
+        <div ></div>
+        <tbody ng-controller="scheduleController">
+          <tr ng-repeat="item in data">
+            <td><h6 class="text-center">{{item.date}}</h6></td>
+            <td><h6 class="text-center">{{item.weatherText}}</h6><!--<img src="{{item.weatherPicture}}" width="25" class="text-center" />--></td>
+            <td><h6 class="text-center">{{item.dateStatus}}</h6></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <div class="large-1 columns text-center">&nbsp;</div>
   </div>
   <div class="row"></div>
   <div class="row"></div>
   <a name="Future"></a>
-  <div class="row nopadding">
-    <div class="large-12 columns text-center" id="list"></div>
+  <div class="row nopadding" ng-controller="daysOffController">
+    <div class="large-12 columns text-center">
+      <table width="100%">
+        <thead>
+          <tr>
+            <th class="text-center" colspan="3"><h5><b>Future Cancelation Dates</b></h5></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in data">
+            <td style="padding:5px;width:50%" valign="top"><h6><b>{{item.col1a}}</b></h6><h6><em>{{item.col1b}}</em></h6></td>
+            <td style="padding:5px;width:50%" valign="top"><h6><b>{{item.col2a}}</b></h6><h6><em>{{item.col2b}}</em></h6></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="row"></div>
   <div class="row"></div>
   <a name="Location"></a>
   <div id="map-canvas"></div>
-  <div class="row nopadding" style="background:#2c3e50;">
-        <div class="large-6 columns text-center" style="padding:10px; color: white;" id="Sign1"></div>
-        <div class="large-6 columns text-center" style="padding:10px; color: white;" id="Sign2"></div>
+  <div class="row nopadding" style="background:#2c3e50;" ng-controller="mapController">
+        <div class="large-6 columns text-center" style="padding:10px; color: white;">{{Sign1}} - SIDE: {{Side1}}</div>
+        <div class="large-6 columns text-center" style="padding:10px; color: white;">{{Sign2}} - SIDE: {{Side2}}</div>
   </div>
   <br>
   <br>
@@ -96,6 +129,6 @@
   $(document).foundation()
   </script>
   <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKaEzcmlfiNJz__ph3eJKTPbt35vR9ugw&sensor=true"></script>
-  <script src="js/script.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
