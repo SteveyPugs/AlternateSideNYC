@@ -1,3 +1,25 @@
+$(document).ready(function(){
+  $(".ASPContent").slick({
+    arrows: false
+  });
+  $("#Today").click(function(){
+    $(".ASPContent").slickGoTo(0);
+  });
+  $("#9Day").click(function(){
+    $(".ASPContent").slickGoTo(1);
+  });
+  $("#Future").click(function(){
+    $(".ASPContent").slickGoTo(2);
+  });
+  $("#Location").click(function(){
+    $(".ASPContent").slickGoTo(3);
+  });
+  $("#About").click(function(){
+    $(".ASPContent").slickGoTo(4);
+  });
+});
+
+
 var app = angular.module('AlternateSideNYC',[])
 app.controller("todayController",function($scope,$http){
   $scope.month = moment().format("MMMM")
@@ -9,7 +31,7 @@ app.controller("todayController",function($scope,$http){
     url: "http://api.alternatesidenyc.com/Dates/" + $scope.year + "/" + $scope.month + "/" + $scope.daynum
   }
   $http(httpMethods).success(function(data, status, headers, config) {
-    if (jQuery.isEmptyObject(data) == true){
+    if (data.length == 1){
       $("#status").css("color","green")
       $scope.status = "Alternate Side Parking is in Effect Today"
     }
@@ -45,7 +67,7 @@ app.controller("scheduleController",function($scope,$http){
         url: "http://api.alternatesidenyc.com/Dates/" + moment().add('days', i).format("YYYY") + "/" + moment().add('days', i).format("MM") + "/" + moment().add('days', i+1).format("DD"),
         async: false,
         success: function(reply){
-          if (jQuery.isEmptyObject(reply) == true){
+          if (reply.length == 0){
             row.dateStatus = "YES"
           }
           else{
@@ -131,7 +153,12 @@ app.controller("mapController",function($scope,$http){
           $http(httpMethods).success(function(data, status, headers, config) {
             if (data.length > 0){
               if(data[0] != undefined){
-                $scope.Sign1 = data[0].SignDetails
+                if(data[0].SignDetails != undefined){
+                  $scope.Sign1 = data[0].SignDetails
+                }
+                else{
+                  $scope.Sign1 = "NO SIGN AVAILABLE"
+                }
                 $scope.Side1 = data[0].SideOfBlock
               }
               else{
@@ -140,7 +167,12 @@ app.controller("mapController",function($scope,$http){
               }
 
               if(data[1] != undefined){
-                $scope.Sign2 = data[1].SignDetails
+                if(data[1].SignDetails != undefined){
+                  $scope.Sign2 = data[1].SignDetails
+                }
+                else{
+                  $scope.Sign2 = "NO SIGN AVAILABLE"
+                }
                 $scope.Side2 = data[1].SideOfBlock
               }
               else{
