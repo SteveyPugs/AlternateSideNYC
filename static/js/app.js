@@ -2,6 +2,7 @@ $(document).ready(function(){
   $(".ASPContent").slick({
     arrows: false
   });
+  //$(".ASPContent").slickGoTo(3);
   $("#Today").click(function(){
     $(".ASPContent").slickGoTo(0);
   });
@@ -18,7 +19,6 @@ $(document).ready(function(){
     $(".ASPContent").slickGoTo(4);
   });
 });
-
 
 var app = angular.module('AlternateSideNYC',[])
 app.controller("todayController",function($scope,$http){
@@ -109,6 +109,7 @@ app.controller("daysOffController",function($scope,$http){
 
 app.controller("mapController",function($scope,$http){
   function initialize(){
+    var markers = [];
     var mapOptions = {
       zoom: 17,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -116,21 +117,19 @@ app.controller("mapController",function($scope,$http){
       draggable: false,
       scaleControl: false,
       scrollwheel: false,
-      navigationControl: false,
+      navigationControl: true,
       streetViewControl: false,
-      panControl: false,
-      zoomControl: false,
+      panControl: true,
+      zoomControl: true,
     }
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions)
     if(navigator.geolocation){
       navigator.geolocation.getCurrentPosition(function(position){
         var pos = new google.maps.LatLng(position.coords.latitude,position.coords.longitude)
-
         var httpMethods = {
           method: "GET",
           url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.coords.latitude + "," + position.coords.longitude + "&sensor=true"
         }
-
         $http(httpMethods).success(function(data, status, headers, config) {
           //console.log(data)
           var street_address = data.results[0].address_components[0].long_name
@@ -188,9 +187,45 @@ app.controller("mapController",function($scope,$http){
             }
           })
         })
-        
         var marker = new google.maps.Marker({position: pos,map: map})
         map.setCenter(pos)
+        var input = /** @type {HTMLInputElement} */(document.getElementById('pac-input'));
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        var searchBox = new google.maps.places.SearchBox(/** @type {HTMLInputElement} */(input));  
+        
+        google.maps.event.addListener(searchBox, 'places_changed', function() {
+          var places = searchBox.getPlaces();
+          for (var i = 0, marker; marker = markers[i]; i++) {
+          marker.setMap(null);
+          }
+          // For each place, get the icon, place name, and location.
+          markers = [];
+          var bounds = new google.maps.LatLngBounds();
+          for (var i = 0, place; place = places[i]; i++) {
+            var image = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+            };
+            // Create a marker for each place.
+            var marker = new google.maps.Marker({
+              map: map,
+              icon: image,
+              title: place.name,
+              position: place.geometry.location
+            });
+            markers.push(marker);
+            bounds.extend(place.geometry.location);
+          }
+          map.fitBounds(bounds);
+          });
+
+          google.maps.event.addListener(map, 'bounds_changed', function() {
+            var bounds = map.getBounds();
+            searchBox.setBounds(bounds);
+          });
       }, function(){
         handleNoGeolocation(true)
       })
