@@ -2,7 +2,6 @@ $(document).ready(function(){
   $(".ASPContent").slick({
     arrows: false
   });
-  //$(".ASPContent").slickGoTo(3);
   $("#Today").click(function(){
     $(".ASPContent").slickGoTo(0);
   });
@@ -119,8 +118,8 @@ app.controller("mapController",function($scope,$http){
       scrollwheel: false,
       navigationControl: true,
       streetViewControl: false,
-      panControl: true,
-      zoomControl: true,
+      panControl: false,
+      zoomControl: false,
     }
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions)
     if(navigator.geolocation){
@@ -144,7 +143,6 @@ app.controller("mapController",function($scope,$http){
           var town = data.results[0].address_components[3].long_name
           var state = data.results[0].address_components[5].long_name
           var zipcode = data.results[0].address_components[7].long_name
-
           var httpMethods = {
             method: "GET",
             url: "http://api.alternatesidenyc.com/Signs/" + town + "/" + road + "/"  + street_address
@@ -164,7 +162,6 @@ app.controller("mapController",function($scope,$http){
                 $scope.Sign1 = "NO SIGN AVAILABLE"
                 $scope.Side1 = "N/A"
               }
-
               if(data[1] != undefined){
                 if(data[1].SignDetails != undefined){
                   $scope.Sign2 = data[1].SignDetails
@@ -187,6 +184,9 @@ app.controller("mapController",function($scope,$http){
             }
           })
         })
+
+
+
         var marker = new google.maps.Marker({position: pos,map: map})
         map.setCenter(pos)
         var input = /** @type {HTMLInputElement} */(document.getElementById('pac-input'));
@@ -194,10 +194,12 @@ app.controller("mapController",function($scope,$http){
         var searchBox = new google.maps.places.SearchBox(/** @type {HTMLInputElement} */(input));  
         
         google.maps.event.addListener(searchBox, 'places_changed', function() {
+
           var places = searchBox.getPlaces();
           for (var i = 0, marker; marker = markers[i]; i++) {
-          marker.setMap(null);
+            marker.setMap(null);
           }
+
           // For each place, get the icon, place name, and location.
           markers = [];
           var bounds = new google.maps.LatLngBounds();
@@ -216,15 +218,73 @@ app.controller("mapController",function($scope,$http){
               title: place.name,
               position: place.geometry.location
             });
+
             markers.push(marker);
             bounds.extend(place.geometry.location);
           }
-          map.fitBounds(bounds);
-          });
 
-          google.maps.event.addListener(map, 'bounds_changed', function() {
-            var bounds = map.getBounds();
-            searchBox.setBounds(bounds);
+          var pos = new google.maps.LatLng(position.coords.latitude,position.coords.longitude)
+          var httpMethods = {
+            method: "GET",
+            url: "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + markers[0].position.lat() + "," + markers[0].position.lng() + "&sensor=true"
+          }
+          $http(httpMethods).success(function(data, status, headers, config) {
+            //console.log(data)
+            var street_address = data.results[0].address_components[0].long_name
+            var count = street_address.match(/-/g)
+            if (count != null && count.length > 1){
+              street_address = street_address.substring(0, street_address.indexOf("-",0)) + "-0"
+            }
+            var road = data.results[0].address_components[1].long_name
+            if ((road.indexOf("maspeth") == -1) || (road.indexOf("north") == -1) || (road.indexOf("south") == -1)){
+              road = road.replace("th","")
+            }
+            var town = data.results[0].address_components[3].long_name
+            var state = data.results[0].address_components[5].long_name
+            var zipcode = data.results[0].address_components[7].long_name
+            var httpMethods = {
+              method: "GET",
+              url: "http://api.alternatesidenyc.com/Signs/" + town + "/" + road + "/"  + street_address
+            }
+            $http(httpMethods).success(function(data, status, headers, config) {
+              if (data.length > 0){
+                if(data[0] != undefined){
+                  if(data[0].SignDetails != undefined){
+                    $scope.Sign1 = data[0].SignDetails
+                  }
+                  else{
+                    $scope.Sign1 = "NO SIGN AVAILABLE"
+                  }
+                  $scope.Side1 = data[0].SideOfBlock
+                }
+                else{
+                  $scope.Sign1 = "NO SIGN AVAILABLE"
+                  $scope.Side1 = "N/A"
+                }
+                if(data[1] != undefined){
+                  if(data[1].SignDetails != undefined){
+                    $scope.Sign2 = data[1].SignDetails
+                  }
+                  else{
+                    $scope.Sign2 = "NO SIGN AVAILABLE"
+                  }
+                  $scope.Side2 = data[1].SideOfBlock
+                }
+                else{
+                  $scope.Sign2 = "NO SIGN AVAILABLE"
+                  $scope.Side2 = "N/A"
+                }
+              }
+              else{
+                $scope.Sign1 = "NO SIGN AVAILABLE"
+                $scope.Side1 = "N/A"
+                $scope.Sign2 = "NO SIGN AVAILABLE"
+                $scope.Side2 = "N/A"
+              }
+            })
+          })
+
+          map.fitBounds(bounds);
           });
       }, function(){
         handleNoGeolocation(true)
