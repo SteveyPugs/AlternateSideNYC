@@ -1,6 +1,6 @@
 {
   "name": "AlternateSideNYC",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "AlternateSideNYC Web Site",
   "main": "index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/SteveyPugs/AlternateSideNYC",
   "dependencies": {
-    "hapi": "~2.1.1",
-    "handlebars": "~1.3.0"
+    "hapi": "^4.0.0",
+    "handlebars": "^2.0.0-alpha.2"
   }
 }
