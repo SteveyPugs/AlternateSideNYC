@@ -1,6 +1,6 @@
 {
   "name": "AlternateSideNYC",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "AlternateSideNYC Web Site",
   "main": "index.js",
   "scripts": {
