@@ -1,42 +1,18 @@
-$(document).ready(function(){
-  $(".ASPContent").slick({
-    arrows: false
-  });
-  $("#Today").click(function(){
-    $(".ASPContent").slickGoTo(0);
-  });
-  $("#9Day").click(function(){
-    $(".ASPContent").slickGoTo(1);
-  });
-  $("#Future").click(function(){
-    $(".ASPContent").slickGoTo(2);
-  });
-  $("#Location").click(function(){
-    $(".ASPContent").slickGoTo(3);
-  });
-  $("#About").click(function(){
-    $(".ASPContent").slickGoTo(4);
-  });
-});
-
 var app = angular.module('AlternateSideNYC',[]);
 app.controller("todayController",function($scope,$http){
-  $scope.month = moment().format("MMMM");
-  $scope.day = moment().format("Do");
-  $scope.daynum = moment().format("DD");
-  $scope.year = moment().format("YYYY");
+  $scope.date = moment().format("MMMM Do YYYY");
   var httpMethods = {
     method: "GET",
-    url: "http://api.alternatesidenyc.com/Dates/" + $scope.year + "/" + $scope.month + "/" + $scope.daynum
+    url: "http://api.alternatesidenyc.com/date"
   };
   $http(httpMethods).success(function(data, status, headers, config) {
-    if (data.length == 0){
-      $("#status").css("color","green");
-      $scope.status = "Alternate Side Parking is in Effect Today";
+    if (data === "IN EFFECT"){
+      $(".status").css("color","green");
+      $scope.status = data;
     }
     else{
-      $("#status").css("color","red");
-      $scope.status = "Alternate Side Parking is not in Effect Today";
+      $(".status").css("color","red");
+      $scope.status = data;
     }
   });
 });
@@ -46,7 +22,7 @@ app.controller("scheduleController",function($scope,$http){
   $scope.weather = [];
   var httpMethods = {
     method: "GET",
-    url: "http://api.alternatesidenyc.com/WeatherForecast"
+    url: "http://api.alternatesidenyc.com/weather"
   };
   $http(httpMethods).success(function(data, status, headers, config) {
     var len = data.forecast.simpleforecast.forecastday.length;
@@ -63,45 +39,19 @@ app.controller("scheduleController",function($scope,$http){
       row.weatherText = $scope.weather[i][0] + "/" + $scope.weather[i][1];
       row.weatherPicture = $scope.weather[i][2];
       $.ajax({
-        url: "http://api.alternatesidenyc.com/Dates/" + moment().add('days', i).format("YYYY") + "/" + moment().add('days', i).format("MM") + "/" + moment().add('days', i+1).format("DD"),
+        url: "http://api.alternatesidenyc.com/date/" + moment().add('days', i).format("YYYY") + "/" + moment().add('days', i).format("MM") + "/" + moment().add('days', i+1).format("DD"),
         async: false,
         success: function(reply){
-          if(reply.length === 0){
-            row.dateStatus = "YES";
+          row.dateStatus = reply;
+          if(reply === "IN EFFECT"){
+            row.class = "success";
           }
           else{
-            row.dateStatus = "NO";
+            row.class = "danger";
           }
         }
       });
       $scope.data.push(row);
-    }
-  });
-});
-
-app.controller("daysOffController",function($scope,$http){
-  var httpMethods = {
-    method: "GET",
-    url: "http://api.alternatesidenyc.com/Dates"
-  };
-  $http(httpMethods).success(function(data, status, headers, config) {
-    $scope.data = [];
-    var counter = 0;
-    for (var i = 1; i < data.length; i++){
-      var isBefore = moment(moment(data[i].CancelDate).add('days', 1).format('MM/DD/YYYY')).isBefore(moment().format('YYYY-MM-DD'));
-      if (!isBefore){
-        row = {};
-        if (data[i] !== undefined){
-          row.col1a = data[i].CancelName;
-          row.col1b = moment(data[i].CancelDate).add('days', 1).format('dddd MMMM Do, YYYY');
-        }
-        if (data[i+1] !== undefined){
-          row.col2a = data[i+1].CancelName;
-          row.col2b = moment(data[i+1].CancelDate).add('days', 1).format('dddd MMMM Do, YYYY');
-        }
-        i = i + 1;
-        $scope.data.push(row);
-      }
     }
   });
 });
@@ -145,7 +95,7 @@ app.controller("mapController",function($scope,$http){
           var zipcode = data.results[0].address_components[7].long_name;
           var httpMethods = {
             method: "GET",
-            url: "http://api.alternatesidenyc.com/Signs/" + town + "/" + road + "/"  + street_address
+            url: "http://api.alternatesidenyc.com/signs/" + town + "/" + road + "/"  + street_address
           };
           $http(httpMethods).success(function(data, status, headers, config) {
             if (data.length > 0){
@@ -244,7 +194,7 @@ app.controller("mapController",function($scope,$http){
             var zipcode = data.results[0].address_components[7].long_name;
             var httpMethods = {
               method: "GET",
-              url: "http://api.alternatesidenyc.com/Signs/" + town + "/" + road + "/"  + street_address
+              url: "http://api.alternatesidenyc.com/signs/" + town + "/" + road + "/"  + street_address
             };
             $http(httpMethods).success(function(data, status, headers, config) {
               if (data.length > 0){
