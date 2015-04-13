@@ -1,0 +1,61 @@
+{{>header}}
+{{>nav}}
+<div class="container-fluid" ng-app="AltSideNYC">
+	<div class="row">
+		<div class="col-lg-3 col-md-4">
+			<div class="row" ng-controller="TodayCtrl">
+				<div class="col-lg-12">
+					<h4>Today <small ng-bind="CurrentDate"></small></h4>
+					<hr>
+					<b><span ng-bind="CurrentStatus" id="CurrentStatus"></span></b>
+					<br><br><br>
+				</div>
+			</div>
+			<div class="row" ng-controller="FutureCtrl">
+				<div class="col-lg-12">
+					<h4>Forecast <small>Next 10 Days</small></h4>
+					<hr>
+					<table class="table table-condensed">
+						<tr>
+							<th width="33%" class="text-center"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span></th>
+							<th width="33%" class="text-center"><span class="glyphicon glyphicon-cloud" aria-hidden="true"></span></th>
+							<th width="33%" class="text-center"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>/<span class="glyphicon glyphicon-remove" aria-hidden="true"></span></th>
+						</tr>
+						<tr ng-repeat="item in calendar" id="\{{item.col1b}}_row">
+							<td class="text-center" ng-bind="item.col1" style="vertical-align:middle;"></td>
+							<td class="text-center" style="vertical-align:middle;"><nobr>\{{item.col2a}}&nbsp;<img ng-src="\{{item.col2b}}" width="25%"></nobr></td>
+							<td class="text-center" style="vertical-align:middle;"><a ng-click="checkDay(item.col1b)" id="\{{item.col1b}}_status">Reveal Status</a></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-9 col-md-8" ng-controller="MapCtrl">
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<table class="table table-bordered">
+						<tr class="info" id="loadtext">
+							<td><span class="blink_text">Finding Signs at Current Location...</span></td>
+						</tr>
+						<tr class="info">
+							<td ng-repeat="item in signs">\{{item}}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<div id="map-canvas"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{{>footer}}
+<script type="text/javascript">
+	$(window).resize(function(){
+		var h = $(window).height();
+		var offsetTop = 160;
+		$("#map-canvas").css("height", (h - offsetTop));
+	}).resize();
+</script>
