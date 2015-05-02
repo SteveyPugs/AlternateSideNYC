@@ -79,8 +79,8 @@ app.controller("MapCtrl", function($scope, $http){
 	function initialize(){
 		var mapOptions = {
 			zoom: 16,
-			disableDefaultUI: true
-
+			disableDefaultUI: true,
+			draggable: false
 		};
 		map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 		if(navigator.geolocation){
