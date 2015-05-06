@@ -57,7 +57,6 @@ var paths = [
 					link = "";
 					ex = "";
 			}
-
 			reply.view("api", {
 				name: name,
 				description: descrip,
@@ -74,7 +73,10 @@ var paths = [
 				name: "Todays Status",
 				path: "/api/v3/status/today"
 			};
-			requestn("https://api.cityofnewyork.us/311/v1/municipalservices?app_id=" + server_config.nyc311id + "&app_key=" + server_config.nyc311key, function(error, response, body){
+			requestn({
+				uri: "https://api.cityofnewyork.us/311/v1/municipalservices?app_id=" + server_config.nyc311id + "&app_key=" + server_config.nyc311key,
+				timeout: 100000
+			}, function(error, response, body){
 				if(!error && response.statusCode == 200 && JSON.parse(body).items[0].items !== undefined){
 					object.results = JSON.parse(body).items[0].items[0];
 				}
@@ -93,7 +95,10 @@ var paths = [
 				name: "Date Look Up",
 				path: "/api/v3/status/find/{date}"
 			};
-			requestn("https://api.cityofnewyork.us/311/v1/municipalservices?app_id=" + server_config.nyc311id + "&app_key=" + server_config.nyc311key + "&startDate=" + request.params.date + "&endDate=" + request.params.date, function(error, response, body){
+			requestn({
+				uri: "https://api.cityofnewyork.us/311/v1/municipalservices?app_id=" + server_config.nyc311id + "&app_key=" + server_config.nyc311key + "&startDate=" + request.params.date + "&endDate=" + request.params.date,
+				timeout: 100000
+			}, function(error, response, body){
 				if(!error && response.statusCode == 200 && JSON.parse(body).items[0].items !== undefined){
 					object.results = JSON.parse(body).items[0].items[0];
 				}
@@ -112,7 +117,10 @@ var paths = [
 				name: "Location",
 				path: "/api/v3/location/{boro}/{block}/{address}"
 			};
-			requestn("https://api.cityofnewyork.us/geoclient/v1/address.json?houseNumber=" + request.params.address + "&street=" + request.params.block + "&borough=" + request.params.boro + "&app_id=" + server_config.opennycid + "&app_key=" + server_config.opennyckey, function(error, response, body){
+			requestn({
+				uri: "https://api.cityofnewyork.us/geoclient/v1/address.json?houseNumber=" + request.params.address + "&street=" + request.params.block + "&borough=" + request.params.boro + "&app_id=" + server_config.opennycid + "&app_key=" + server_config.opennyckey,
+				timeout: 100000
+			}, function(error, response, body){ 
 				if (!error && response.statusCode == 200) {
 					var data = JSON.parse(body);
 					if(data.message == undefined){
