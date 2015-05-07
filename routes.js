@@ -126,8 +126,7 @@ var paths = [
 					if(data.message == undefined){
 						var crossA = data.address.lowCrossStreetName1;
 						var crossB = data.address.highCrossStreetName1;
-						var locationfile = fs.readFileSync("./lib/data/locations.CSV").toString();
-						csv.parse(locationfile, function(err, data){
+						var locationfile = csv.parse(function(err, data){
 							var signids = [];
 							var findlocationnumbers = _.filter(data, function(row){
 								if(_.contains(row, crossA)){
@@ -149,9 +148,8 @@ var paths = [
 									}
 								}
 							});
-							var signfile = fs.readFileSync("./lib/data/signs.CSV").toString();
-							csv.parse(signfile, {
-								relax: true 
+							var signfile = csv.parse({
+						 		relax: true 
 							}, function(err, data){
 								var signs = [];
 								var findsigns = _.filter(data, function(row){
@@ -164,7 +162,9 @@ var paths = [
 								object.results = signs;
 								reply(object).type("application/json");
 							});
+							fs.createReadStream("./lib/data/signs.CSV").pipe(signfile);
 						});
+						fs.createReadStream("./lib/data/locations.CSV").pipe(locationfile);
 					}
 					else{
 						object.results = [];
