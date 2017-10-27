@@ -1,42 +1,13 @@
-<nav class="navbar navbar-default">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#altmenu">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<a class="navbar-brand" href="/" style="font-family: 'Quicksand', sans-serif;">
-				<b>AlternateSide.NYC</b>
-				<!-- <img alt="Brand" src="..."> -->
-			</a>
-		</div>
-		<div class="collapse navbar-collapse" id="altmenu">
-			<ul class="nav navbar-nav navbar-right">
-				<li class="active"><a data-toggle="modal" data-target="#About">About</a></li>
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">API <span class="glyphicon glyphicon-menu-down"></span></a>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="/api/v3/current">Current Status</a><li>
-						<li><a href="/api/v3/future">Future Status</a></li>
-						<li><a href="/api/v3/find">Location</a></li>
-					</ul>
-				</li>
-
-			</ul>
-			{{#if api}}
-			<div class="navbar-form">
-				<div class="form-group" style="display:inline;">
-					<div class="input-group" style="display:table;">
-						<span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
-						<input id="searchsign" class="form-control" name="search" placeholder="Search Location" autocomplete="off" autofocus="autofocus" type="text">
-					</div>
-				</div>
-			</div>
-			{{/if}}
-		</div><!-- /.navbar-collapse -->
-	</div><!-- /.container-fluid -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a class="navbar-brand" href="#">AlternateSide.NYC</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item"><a class="nav-link" data-target="#About" href="#" data-toggle="modal">About</a></li>
+		</ul>
+	</div>
 </nav>
 <div class="modal fade" id="About" tabindex="-1" role="dialog" aria-labelledby="About" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
@@ -44,7 +15,7 @@
 			<div class="modal-header">
 				<h4 class="modal-title" id="myModalLabel">About AlternateSide.NYC</h4>
 			</div>
-			<div class="modal-body">AlternateSide.NYC is a web application for Alternate Side Parking in New York City. Parking can be difficult and cumbersome in NYC. Finding a parking spot can be sometimes near impossible. When you do find one, you question why it is an open spot!<br/><br/>Alas, an app that can help you find out the parking signs near your location! Need to know about parking for next weekend? Not a problem as we provide a 10 day forecast. Need know this morning if its cancelled because of the 2 Foot Blizzard that just came through? We are on it.</div>
+			<div class="modal-body">AlternateSide.NYC is a web application for Alternate Side Parking in New York City. Parking can be difficult and cumbersome in NYC. Finding a parking spot can be sometimes near impossible. When you do find one, you question why it is an open spot!<br/><br/>Need to know about parking for next weekend? Not a problem as we provide a 10 day forecast. Need know this morning if its cancelled because of the 2 Foot Blizzard that just came through? We are on it.</div>
 		</div>
 	</div>
 </div>
